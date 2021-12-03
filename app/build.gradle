@@ -1,0 +1,141 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.fulafula"
+        minSdk 23
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildFeatures{
+        viewBinding true
+    }
+
+    def propertiesFile = rootProject.file("base.properties")
+    def properties = new Properties()
+    properties.load(new FileInputStream(propertiesFile))
+
+    signingConfigs {
+        release {
+            storeFile properties['KEYSTORE_FILE'] != null ? file(properties['KEYSTORE_FILE']) : null
+            keyAlias properties.getProperty('KEY_ALIAS', null)
+            storePassword properties.getProperty('STORE_PASSWORD', null)
+            keyPassword properties.getProperty('KEY_PASSWORD', null)
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            versionNameSuffix "-dev"
+            manifestPlaceholders.appName = "@string/app_name_dev"
+            manifestPlaceholders.analyticsEnabled = false
+            manifestPlaceholders.crashlyticsEnabled = false
+
+            buildConfigField 'String', 'API_DOMAIN', properties.getProperty('API_DOMAIN_DEV', "\"\"")
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            manifestPlaceholders.appName = "@string/app_name"
+            manifestPlaceholders.analyticsEnabled = true
+            manifestPlaceholders.crashlyticsEnabled = true
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+            buildConfigField 'String', 'API_DOMAIN', properties.getProperty('API_DOMAIN_PROD', "\"\"")
+        }
+        sit {
+            initWith debug
+            versionNameSuffix "-sit"
+            manifestPlaceholders.appName = "@string/app_name_sit"
+
+            buildConfigField 'String', 'API_DOMAIN', properties.getProperty('API_DOMAIN_SIT', "\"\"")
+        }
+        uat {
+            initWith release
+            versionNameSuffix "-uat"
+            manifestPlaceholders.appName = "@string/app_name_uat"
+
+            buildConfigField 'String', 'API_DOMAIN', properties.getProperty('API_DOMAIN_UAT', "\"\"")
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.2"
+    implementation 'androidx.fragment:fragment-ktx:1.4.0'
+    implementation 'androidx.activity:activity-ktx:1.4.0'
+
+    // Render vector graphics.
+    implementation "androidx.vectordrawable:vectordrawable:1.1.0"
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+
+    // RxJava
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.7'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+
+    // gson parser
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+    // Database
+    implementation "androidx.room:room-runtime:2.3.0"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    annotationProcessor "androidx.room:room-compiler:2.3.0"
+
+    // viewModel and lifecycle
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-process:2.4.0"
+
+    // dependency injection
+    implementation 'com.google.dagger:dagger:2.38.1'
+    implementation 'com.google.dagger:dagger-android:2.38.1'
+    implementation 'com.google.dagger:dagger-android-support:2.38.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.38.1'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.38.1'
+
+    // for support biometric
+    implementation 'androidx.biometric:biometric:1.1.0'
+
+    // firebase
+    implementation platform('com.google.firebase:firebase-bom:29.0.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-crashlytics'
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

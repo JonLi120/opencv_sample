@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">FulaFula</string>
+    <string name="app_name_dev">FulaFula_DEV</string>
+    <string name="app_name_sit">FulaFula_SIT</string>
+    <string name="app_name_uat">FulaFula_UAT</string>
+
+    <string name="default_notification_channel_id">fula_channel</string>
+
+    <string name="facebook_app_id">650429099673298</string>
+    <string name="fb_login_protocol_scheme">fb650429099673298</string>
+</resources>
