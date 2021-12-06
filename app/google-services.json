@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "806563575988",
+    "project_id": "fulafulaapp",
+    "storage_bucket": "fulafulaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:806563575988:android:c52eda83737b9359d27fe1",
+        "android_client_info": {
+          "package_name": "com.fulafula"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "806563575988-psri0aud8bs9gai5du5v4fkhgpihnuj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fulafula",
+            "certificate_hash": "c9506929c7ecb0b29ed1566bf3d854940f4f34e8"
+          }
+        },
+        {
+          "client_id": "806563575988-6oetfgit18ja1oi048b866n3tfajgg9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTG9utWpplCh2jcfIMUrEuGUX7Xemu-dg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "806563575988-6oetfgit18ja1oi048b866n3tfajgg9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
