@@ -43,13 +43,13 @@ steps:
 
   - script: |
       cd $(Build.SourcesDirectory)
-      filePath = keystore.secureFilePath
-      echo "\nKEYSTORE_FILE = $filePath" >> base.properties
+      filePath = $(keystore.secureFilePath)
+      echo "KEYSTORE_FILE = $(filePath)" >> base.properties
       cat base.properties
     displayName: 'Set up jks file path in properties.'
 
-  - script: chmod +x ./gradlew
-    displayName: 'Installed Gradlew'
+  # - script: chmod +x ./gradlew
+  #   displayName: 'Installed Gradlew'
 
-  - script: fastlane run_build
-    displayName: 'Gradlew Building'
+  # - script: fastlane run_build
+  #   displayName: 'Gradlew Building'
