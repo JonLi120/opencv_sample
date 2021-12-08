@@ -43,13 +43,12 @@ steps:
 
   - script: |
       cd $(Build.SourcesDirectory)
-      echo "$(ls)"
-      echo "KEYSTORE_FILE = ${keystore.secureFilePath}" >> $(Build.SourcesDirectory)/base.properties
-      cat $(Build.SourcesDirectory)/base.properties
+      echo "KEYSTORE_FILE = ${keystore.secureFilePath}" | sudo tee -a base.properties
+      cat base.properties
     displayName: 'Set up jks file path in properties.'
 
   - script: chmod +x ./gradlew
     displayName: 'Installed Gradlew'
 
-  - script: fastlane test
+  - script: fastlane run_build
     displayName: 'Gradlew Building'
