@@ -43,8 +43,8 @@ steps:
 
   - script: |
       cd $(Build.SourcesDirectory)
-      filePath = $(keystore.secureFilePath)
-      echo "\nKEYSTORE_FILE = $filePath" | sudo tee -a base.properties
+      filePath = keystore.secureFilePath
+      echo "\nKEYSTORE_FILE = $filePath" >> base.properties
       cat base.properties
     displayName: 'Set up jks file path in properties.'
 
