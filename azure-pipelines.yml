@@ -43,7 +43,7 @@ steps:
 
   - script: |
       cd $(Build.SourcesDirectory)
-      echo "\r\nKEYSTORE_FILE = ${{keystore.secureFilePath}}" >> base.properties
+      echo "\r\nKEYSTORE_FILE = $(keystore.secureFilePath)" >> base.properties
       cat base.properties
     displayName: 'Set up jks file path in properties.'
 
