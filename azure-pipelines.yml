@@ -42,8 +42,10 @@ steps:
     displayName: 'Move file to root project'
 
   - script: |
+      cd $(Build.SourcesDirectory)
+      echo "$(ls)"
       echo "KEYSTORE_FILE = ${keystore.secureFilePath}" >> $(Build.SourcesDirectory)/base.properties
-      echo $(Build.SourcesDirectory)/base.properties
+      cat $(Build.SourcesDirectory)/base.properties
     displayName: 'Set up jks file path in properties.'
 
   - script: chmod +x ./gradlew
