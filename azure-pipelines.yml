@@ -35,21 +35,38 @@ steps:
     inputs:
       secureFile: 'base.properties'
 
+  - task: DownloadSecureFile@1
+    name: firebaseCredential
+    displayName: 'Download firebase credentials'
+    inputs:
+      secureFile: 'firebase_credentials.json'
+
   - script: |
       sudo chown root:root $(baseProperties.secureFilePath)
       sudo chmod a+r $(baseProperties.secureFilePath)
       sudo mv $(baseProperties.secureFilePath) $(Build.SourcesDirectory)
-    displayName: 'Move file to root project'
+      sudo mv $(firebaseCredential.secureFilePath) $(Build.SourcesDirectory)
+    displayName: 'Move files to root project'
 
   - script: |
+      echo $(ls)
       cd $(Build.SourcesDirectory)
       echo -e "\nKEYSTORE_FILE = $(keystore.secureFilePath)" >> base.properties
-      echo $(FIREBASE_ANDROID_ID)
-      cat base.properties
     displayName: 'Set up jks file path in properties.'
 
-  # - script: chmod +x ./gradlew
-  #   displayName: 'Installed Gradlew'
+  - bash: echo "FIREBASE_ANDROID_ID = $env:FIREBASE_APP_ID"
+    env: 
+      FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
+    displayName: 'Set up firebase id in Environment.'
+
+  - script: chmod +x ./gradlew
+    displayName: 'Installed Gradlew'
+
+  - script: |
+      fastlane run_build
+      fastlane build_uat_apk
+      fastlane distribute
+    displayName: 'Build apk and push Firebase App Distributions'
 
   # - script: fastlane run_build
   #   displayName: 'Gradlew Building'

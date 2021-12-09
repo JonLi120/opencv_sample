@@ -57,4 +57,14 @@ platform :android do
     gradle(task: "clean assembleRelease")
     upload_to_play_store
   end
+
+  desc "Lane for distributing app using Firebase App Distributions"
+  lane :distribute do
+      firebase_app_distribution(
+          service_credentials_file: "firebase_credentials.json",
+          app: ENV['FIREBASE_APP_ID'],
+          release_notes: commit[:message],
+          groups: "ctbc_testers"
+      )
+  end
 end
