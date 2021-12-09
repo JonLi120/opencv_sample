@@ -63,8 +63,7 @@ steps:
     displayName: 'Installed Gradlew'
 
   - script: |
-      fastlane run_build
-      fastlane build_uat_apk
+      fastlane clean
       fastlane distribute
     displayName: 'Build apk and push Firebase App Distributions'
 

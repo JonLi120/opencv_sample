@@ -22,9 +22,9 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Delete the build directory and rebuild"
-  lane :run_build do
-    gradle(tasks: ["clean", "build"])
+  desc "Clear project build folder."
+  lane :clean do
+    gradle(tasks: ["clean"])
   end
 
   desc "Build .apk"
@@ -60,11 +60,15 @@ platform :android do
 
   desc "Lane for distributing app using Firebase App Distributions"
   lane :distribute do
-      firebase_app_distribution(
-          service_credentials_file: "firebase_credentials.json",
-          app: ENV['FIREBASE_APP_ID'],
-          release_notes: commit[:message],
-          groups: "ctbc_testers"
-      )
+    build_android_app(
+      task: "assemble",
+      build_type: "uat"
+    )
+    firebase_app_distribution(
+        service_credentials_file: "firebase_credentials.json",
+        app: ENV['FIREBASE_APP_ID'],
+        release_notes: commit[:message],
+        groups: "ctbc_testers"
+    )
   end
 end
