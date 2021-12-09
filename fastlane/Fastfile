@@ -59,7 +59,7 @@ platform :android do
   end
 
   desc "Lane for distributing app using Firebase App Distributions"
-  lane :distribute do
+  lane :distribute do |options|
     build_android_app(
       task: "assemble",
       build_type: "uat"
@@ -67,7 +67,7 @@ platform :android do
     commit = last_git_commit
     firebase_app_distribution(
         service_credentials_file: "firebase_credentials.json",
-        app: ENV['FIREBASE_APP_ID'],
+        app: options[:firebase_id],
         release_notes: commit[:message],
         groups: "ctbc_testers"
     )
