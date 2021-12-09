@@ -64,6 +64,7 @@ platform :android do
       task: "assemble",
       build_type: "uat"
     )
+    commit = last_git_commit
     firebase_app_distribution(
         service_credentials_file: "firebase_credentials.json",
         app: ENV['FIREBASE_APP_ID'],

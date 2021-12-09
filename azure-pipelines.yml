@@ -54,7 +54,7 @@ steps:
       echo -e "\nKEYSTORE_FILE = $(keystore.secureFilePath)" >> base.properties
     displayName: 'Set up jks file path in properties.'
 
-  - bash: echo "FIREBASE_ANDROID_ID = $env:FIREBASE_APP_ID"
+  - bash: echo "FIREBASE_ANDROID_ID = $FIREBASE_APP_ID"
     env: 
       FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
     displayName: 'Set up firebase id in Environment.'
