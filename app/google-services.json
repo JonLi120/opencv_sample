@@ -22,7 +22,7 @@
           }
         },
         {
-          "client_id": "806563575988-6oetfgit18ja1oi048b866n3tfajgg9v.apps.googleusercontent.com",
+          "client_id": "806563575988-2sd4dmsrqdhhhohrjsjhr1e9adajtvuc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,8 +35,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "806563575988-6oetfgit18ja1oi048b866n3tfajgg9v.apps.googleusercontent.com",
+              "client_id": "806563575988-2sd4dmsrqdhhhohrjsjhr1e9adajtvuc.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "806563575988-33v31qn13o3lnv2luk5qspo01dq5fb50.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fulafula"
+              }
             }
           ]
         }
