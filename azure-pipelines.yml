@@ -7,106 +7,100 @@ trigger:
  - uat
  - feature/*
 
-# pool:
-#   vmImage: 'macos-latest'
-variables:
-  - name: vmImage
-    value: 'macos-latest'
+pool:
+  vmImage: 'macos-latest'
 
-stages:
-- stage: Build
-  pool: $(vmImage)
-  jobs:
-    - job: build_job
-      steps:
-        - task: DownloadSecureFile@1
-          name: keystore
-          displayName: 'Download keystore'
-          inputs:
-            secureFile: 'release.keystore'
+jobs:
+  - job: build_job
+    steps:
+      - task: DownloadSecureFile@1
+        name: keystore
+        displayName: 'Download keystore'
+        inputs:
+          secureFile: 'release.keystore'
 
-        - task: DownloadSecureFile@1
-          name: baseProperties
-          displayName: 'Download Properties'
-          inputs:
-            secureFile: 'base.properties'
+      - task: DownloadSecureFile@1
+        name: baseProperties
+        displayName: 'Download Properties'
+        inputs:
+          secureFile: 'base.properties'
 
-        - task: DownloadSecureFile@1
-          name: firebaseCredential
-          displayName: 'Download firebase credentials'
-          inputs:
-            secureFile: 'firebase_credentials.json'
+      - task: DownloadSecureFile@1
+        name: firebaseCredential
+        displayName: 'Download firebase credentials'
+        inputs:
+          secureFile: 'firebase_credentials.json'
 
-        - script: |
-            sudo chown root:root $(baseProperties.secureFilePath)
-            sudo chmod a+r $(baseProperties.secureFilePath)
-            sudo mv $(baseProperties.secureFilePath) $(Build.SourcesDirectory)
-            sudo mv $(firebaseCredential.secureFilePath) $(Build.SourcesDirectory)
-          displayName: 'Move files to root project'
+      - script: |
+          sudo chown root:root $(baseProperties.secureFilePath)
+          sudo chmod a+r $(baseProperties.secureFilePath)
+          sudo mv $(baseProperties.secureFilePath) $(Build.SourcesDirectory)
+          sudo mv $(firebaseCredential.secureFilePath) $(Build.SourcesDirectory)
+        displayName: 'Move files to root project'
 
-        - script: |
-            cd $(Build.SourcesDirectory)
-            echo -e "\nKEYSTORE_FILE = $(keystore.secureFilePath)" >> base.properties
-          displayName: 'Set up jks file path in properties.'
+      - script: |
+          cd $(Build.SourcesDirectory)
+          echo -e "\nKEYSTORE_FILE = $(keystore.secureFilePath)" >> base.properties
+        displayName: 'Set up jks file path in properties.'
 
-        - bash: echo "FIREBASE_ANDROID_ID = $FIREBASE_APP_ID"
-          env: 
-            FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
-          displayName: 'Set up firebase id in Environment.'
+      - bash: echo "FIREBASE_ANDROID_ID = $FIREBASE_APP_ID"
+        env: 
+          FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
+        displayName: 'Set up firebase id in Environment.'
 
-        - task: JavaToolInstaller@0
-          inputs:
-            versionSpec: '11'
-            jdkArchitectureOption: 'x64'
-            jdkSourceOption: 'PreInstalled'
+      - task: JavaToolInstaller@0
+        inputs:
+          versionSpec: '11'
+          jdkArchitectureOption: 'x64'
+          jdkSourceOption: 'PreInstalled'
 
-        - script: |
-            java -version
-          env:
-            JAVA_HOME: $(JAVA_HOME_11_X64)
-            PATH: $(JAVA_HOME_11_X64)/bin:$(PATH)
-          displayName: 'Set Java Environment Variables'
+      - script: |
+          java -version
+        env:
+          JAVA_HOME: $(JAVA_HOME_11_X64)
+          PATH: $(JAVA_HOME_11_X64)/bin:$(PATH)
+        displayName: 'Set Java Environment Variables'
 
-        - script: chmod +x ./gradlew
-          displayName: 'Installed Gradlew'
-        # 
-        # - script: |
-        #     fastlane clean
-        #     fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID)
-        #   displayName: 'Build apk and push Firebase App Distributions'
+      - script: chmod +x ./gradlew
+        displayName: 'Installed Gradlew'
+      
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(System.DefaultWorkingDirectory)'
+          artifactName: AppBuild
+      # 
+      # - script: |
+      #     fastlane clean
+      #     fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID)
+      #   displayName: 'Build apk and push Firebase App Distributions'
+  - job: test_job
+    dependsOn: build_job
+    condition: succeeded()
+    steps:
+      - task: DownloadBuildArtifacts@0
+        displayName: 'Download Build Artifacts'
+        inputs:
+          artifactName: AppBuild
+          downloadPath: $(System.DefaultWorkingDirectory)
 
-- stage: Test
-  pool: $(vmImage)
-  dependsOn:
-    - Build
-  condition: succeeded()
-  jobs:
-    - job: test_job
-      steps:
-        - script: fastlane tests
+      - script: fastlane tests
 
-- stage: UAT
-  pool: $(vmImage)
-  dependsOn:
-    - Build
-    - Test
-  condition: and(succeeded('Build'), eq(variables['Build.SourceBranch'], 'refs/heads/feature/*'))
-  jobs:
-    - job: uat_job
-      steps: 
-        - script: |
-            echo 'this is uat job'
-            echo $(variables['Build.SourceBranch'])
+  - job: uat_job
+    dependsOn:
+      - build_job
+      - test_job
+    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/feature/*'))
+    steps: 
+      - script: |
+          echo 'this is uat job'
+          echo $(variables['Build.SourceBranch'])
 
-- stage: Release 
-  pool: $(vmImage) 
-  dependsOn:
-    - Build
-    - Test
-  condition: and(succeeded('Build'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
-  jobs:
-    - job: release_job
-      steps: 
-        - script: |
-            echo 'this is release job'
-            echo $(variables['Build.SourceBranch'])
+  - job: release_job
+    dependsOn:
+      - build_job
+      - test_job
+    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
+    steps: 
+      - script: |
+          echo 'this is release job'
+          echo $(variables['Build.SourceBranch'])
