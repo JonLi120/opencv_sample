@@ -65,6 +65,8 @@ stages:
 
         - script: chmod +x ./gradlew
           displayName: 'Installed Gradlew'
+
+        - script: fastlane tests
         # 
         # - script: |
         #     fastlane clean
