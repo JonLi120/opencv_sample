@@ -15,19 +15,6 @@ stages:
   jobs:
     - job: build_job
       steps:
-        # - task: JavaToolInstaller@0
-        #   inputs:
-        #     versionSpec: '11'
-        #     jdkArchitectureOption: 'x64'
-        #     jdkSourceOption: 'PreInstalled'
-
-        # - script: |
-        #     java -version
-        #   env:
-        #     JAVA_HOME: $(JAVA_HOME_11_X64)
-        #     PATH: $(JAVA_HOME_11_X64)/bin:$(PATH)
-        #   displayName: 'Set Java Environment Variables'
-
         - task: DownloadSecureFile@1
           name: keystore
           displayName: 'Download keystore'
@@ -63,18 +50,26 @@ stages:
             FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
           displayName: 'Set up firebase id in Environment.'
 
-        # - script: chmod +x ./gradlew
-        #   displayName: 'Installed Gradlew'
+        - task: JavaToolInstaller@0
+          inputs:
+            versionSpec: '11'
+            jdkArchitectureOption: 'x64'
+            jdkSourceOption: 'PreInstalled'
+
+        - script: |
+            java -version
+          env:
+            JAVA_HOME: $(JAVA_HOME_11_X64)
+            PATH: $(JAVA_HOME_11_X64)/bin:$(PATH)
+          displayName: 'Set Java Environment Variables'
+
+        - script: chmod +x ./gradlew
+          displayName: 'Installed Gradlew'
         # 
         # - script: |
         #     fastlane clean
         #     fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID)
         #   displayName: 'Build apk and push Firebase App Distributions'
-        - task: Gradle@2
-          displayName: 'gradlew build'
-          inputs:
-            jdkVersionOption: 1.11
-            gradleOptions: '-Xmx2048m'
 
 - stage: Test
   dependsOn:
