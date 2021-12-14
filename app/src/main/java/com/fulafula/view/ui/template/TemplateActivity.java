@@ -11,7 +11,7 @@ public class TemplateActivity extends BaseActivity<ActivityTemplateBinding> {
 
     @Override
     protected String getCurrentClassName() {
-        return "MainActivity";
+        return "TemplateActivity";
     }
 
     @Override
