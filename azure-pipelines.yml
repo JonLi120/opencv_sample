@@ -78,8 +78,8 @@ stages:
     - job: UAT job
       steps: 
         - script: |
-          echo 'this is uat job'
-          echo variables['Build.SourceBranch']
+            echo 'this is uat job'
+            echo $(variables['Build.SourceBranch'])
 
 - stage: Release  
   dependsOn:
@@ -90,7 +90,5 @@ stages:
     - job: Release job
       steps: 
         - script: |
-          echo 'this is uat job'
-          echo variables['Build.SourceBranch']
-
-
+            echo 'this is release job'
+            echo $(variables['Build.SourceBranch'])
