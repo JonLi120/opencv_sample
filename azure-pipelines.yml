@@ -85,7 +85,6 @@ stages:
       steps:
         - task: Gradle@2
           inputs:
-            gradleWrapperFile: 'gradlew'
             gradleOptions: '-Xmx3072m'
             jdkVersionOption: '1.11'
             publishJUnitResults: false
