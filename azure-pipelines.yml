@@ -83,13 +83,23 @@ stages:
   jobs:
     - job: test_job
       steps:
-        - task: Gradle@2
+        - task: JavaToolInstaller@0
           inputs:
-            gradleOptions: '-Xmx3072m'
-            jdkVersionOption: '1.11'
-            publishJUnitResults: false
-            testResultsFiles: '**/TEST-*.xml'
-            tasks: 'test'
+            versionSpec: '11'
+            jdkArchitectureOption: 'x64'
+            jdkSourceOption: 'PreInstalled'
+
+        - script: |
+            java -version
+          env:
+            JAVA_HOME: $(JAVA_HOME_11_X64)
+            PATH: $(JAVA_HOME_11_X64)/bin:$(PATH)
+          displayName: 'Set Java Environment Variables'
+
+        - script: chmod +x ./gradlew
+          displayName: 'Installed Gradlew'
+
+        - script: fastlane tests        
 
 - stage: UAT
   dependsOn:
@@ -108,24 +118,6 @@ stages:
           inputs:
             artifactName: AppBuild
             downloadPath: $(System.DefaultWorkingDirectory)
-
-        - task: JavaToolInstaller@0
-          inputs:
-            versionSpec: '11'
-            jdkArchitectureOption: 'x64'
-            jdkSourceOption: 'PreInstalled'
-
-        - script: |
-            java -version
-          env:
-            JAVA_HOME: $(JAVA_HOME_11_X64)
-            PATH: $(JAVA_HOME_11_X64)/bin:$(PATH)
-          displayName: 'Set Java Environment Variables'
-
-        - script: chmod +x ./gradlew
-          displayName: 'Installed Gradlew'
-
-        - script: fastlane tests        
 
 - stage: Release 
   dependsOn:
