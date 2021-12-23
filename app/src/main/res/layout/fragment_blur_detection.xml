@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Button
+        android:id="@+id/btnSelectImage"
+        style="@style/CommonButtonStyle"
+        android:text="@string/lab_select_image"
+        android:layout_marginTop="40dp"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgPhoto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintHeight_max="400dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSelectImage"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tvDetectionInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@id/imgPhoto"
+        app:layout_constraintEnd_toEndOf="@id/imgPhoto"
+        app:layout_constraintTop_toBottomOf="@id/imgPhoto"
+        tools:text="Threshold: 500, Current: 223.33"/>
+
+    <TextView
+        android:id="@+id/tvIsBlur"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@id/imgPhoto"
+        app:layout_constraintEnd_toEndOf="@id/imgPhoto"
+        app:layout_constraintTop_toBottomOf="@id/tvDetectionInfo"
+        tools:text="BLURRED IMAGE"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

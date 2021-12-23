@@ -30,7 +30,7 @@
             android:value="@string/facebook_app_id"/>
 
         <activity
-            android:name=".view.ui.template.TemplateActivity"
+            android:name=".view.ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

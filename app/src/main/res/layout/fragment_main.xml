@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.ui.main.MainFragment">
+
+    <Button
+        android:id="@+id/btnBlurDetection"
+        style="@style/CommonButtonStyle"
+        android:text="@string/lab_image_blur_detection"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnRectangleDetection"/>
+
+    <Button
+        android:id="@+id/btnRectangleDetection"
+        style="@style/CommonButtonStyle"
+        android:text="@string/lab_image_rectangle_detection"
+        app:layout_constraintStart_toStartOf="@id/btnBlurDetection"
+        app:layout_constraintEnd_toEndOf="@id/btnBlurDetection"
+        app:layout_constraintTop_toBottomOf="@id/btnBlurDetection"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
