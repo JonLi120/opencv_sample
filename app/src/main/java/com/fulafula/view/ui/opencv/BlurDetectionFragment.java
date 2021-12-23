@@ -20,7 +20,6 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.InstallCallbackInterface;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
 
 import javax.inject.Inject;
 
@@ -40,8 +39,6 @@ public class BlurDetectionFragment extends BaseFragment<FragmentBlurDetectionBin
     private MainViewModel viewModel;
 
     private ActivityResultLauncher<String> launcher;
-
-    private Mat sourceMatImage;
 
     private BaseLoaderCallback loaderCallback;
 
@@ -63,9 +60,7 @@ public class BlurDetectionFragment extends BaseFragment<FragmentBlurDetectionBin
         loaderCallback = new BaseLoaderCallback(requireContext()) {
             @Override
             public void onManagerConnected(int status) {
-                if (status == LoaderCallbackInterface.SUCCESS) {
-                    sourceMatImage = new Mat();
-                } else {
+                if (status != LoaderCallbackInterface.SUCCESS) {
                     super.onManagerConnected(status);
                 }
             }
@@ -99,7 +94,7 @@ public class BlurDetectionFragment extends BaseFragment<FragmentBlurDetectionBin
         _binding.imgPhoto.setImageURI(uri);
 
         if (uri != null) {
-            viewModel.getScoreFromOpenCV(requireActivity().getContentResolver(), uri, sourceMatImage);
+            viewModel.getScoreFromOpenCV(requireActivity().getContentResolver(), uri);
         }
     }
 

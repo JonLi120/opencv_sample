@@ -1,7 +1,5 @@
 package com.fulafula.view.ui.main;
 
-import static org.opencv.core.CvType.CV_64F;
-
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -15,13 +13,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.fulafula.view.common.BaseViewModel;
 
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfDouble;
 import org.opencv.imgproc.Imgproc;
-
-import java.text.DecimalFormat;
 
 import javax.inject.Inject;
 
@@ -29,7 +23,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class MainViewModel extends BaseViewModel {
 
@@ -43,7 +36,7 @@ public class MainViewModel extends BaseViewModel {
         return _blurScore;
     }
 
-    public void getScoreFromOpenCV(ContentResolver contentResolver, Uri imageUri, Mat sourceMatImage) {
+    public void getScoreFromOpenCV(ContentResolver contentResolver, Uri imageUri) {
         Disposable disposable = Observable.just(imageUri)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -58,7 +51,7 @@ public class MainViewModel extends BaseViewModel {
                     }
                     return bitmap;
                 })
-                .map(bitmap -> detectBitmap(bitmap, sourceMatImage))
+                .map(this::detectBitmap)
                 .subscribe(_blurScore::setValue, Throwable::printStackTrace);
 
         mDisposable.add(disposable);
@@ -76,22 +69,27 @@ public class MainViewModel extends BaseViewModel {
 //        return Double.valueOf(new DecimalFormat("0.00").format(Math.pow(std.get(0, 0)[0], 2.0)));
 //    }
 
-    private int detectBitmap(Bitmap bitmap, Mat sourceMatImage) {
-        int l = CvType.CV_8UC1;
+    private int detectBitmap(Bitmap bitmap) {
         Mat matImage = new Mat();
         Utils.bitmapToMat(bitmap, matImage);
         Mat matImageGrey = new Mat();
         Imgproc.cvtColor(matImage, matImageGrey, Imgproc.COLOR_BGR2GRAY);
 
-        Bitmap destImage;
-        destImage = Bitmap.createBitmap(bitmap);
+        matImage.release();
+
+        Bitmap destImage = Bitmap.createBitmap(bitmap);
         Mat dst2 = new Mat();
         Utils.bitmapToMat(destImage, dst2);
         Mat laplacianImage = new Mat();
-        dst2.convertTo(laplacianImage, l);
+        dst2.convertTo(laplacianImage, CvType.CV_8UC1);
         Imgproc.Laplacian(matImageGrey, laplacianImage, CvType.CV_8U);
         Mat laplacianImage8bit = new Mat();
-        laplacianImage.convertTo(laplacianImage8bit, l);
+        laplacianImage.convertTo(laplacianImage8bit, CvType.CV_8UC1);
+
+        destImage.recycle();
+        matImageGrey.release();
+        dst2.release();
+        laplacianImage.release();
 
         Bitmap bmp = Bitmap.createBitmap(laplacianImage8bit.cols(), laplacianImage8bit.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(laplacianImage8bit, bmp);
@@ -102,6 +100,10 @@ public class MainViewModel extends BaseViewModel {
             if (pixel > maxLap)
                 maxLap = pixel;
         }
+
+        bitmap.recycle();
+        bmp.recycle();
+        laplacianImage8bit.release();
 
         return maxLap;
     }
