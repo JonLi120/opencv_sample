@@ -17,7 +17,6 @@ import com.fulafula.view.common.BaseFragment;
 import com.fulafula.view.ui.main.MainViewModel;
 
 import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.InstallCallbackInterface;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
@@ -64,11 +63,6 @@ public class BlurDetectionFragment extends BaseFragment<FragmentBlurDetectionBin
                     super.onManagerConnected(status);
                 }
             }
-
-            @Override
-            public void onPackageInstall(int operation, InstallCallbackInterface callback) {
-                super.onPackageInstall(operation, callback);
-            }
         };
     }
 
@@ -94,12 +88,13 @@ public class BlurDetectionFragment extends BaseFragment<FragmentBlurDetectionBin
         _binding.imgPhoto.setImageURI(uri);
 
         if (uri != null) {
-            viewModel.getScoreFromOpenCV(requireActivity().getContentResolver(), uri);
+            viewModel.getScoreFromOpenCV(uri);
         }
     }
 
     private void setupObserver() {
-        viewModel.getBlurScore().observe(getViewLifecycleOwner(), score -> {
+        viewModel.getScoreWithUri().observe(getViewLifecycleOwner(), pair -> {
+            int score = pair.getSecond();
             _binding.tvDetectionInfo.setText(String.format("Blur Detection Score：%s", score));
             if (score <= BLUR_THRESHOLD) {
                 _binding.tvIsBlur.setText("This image is blurry.");

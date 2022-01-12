@@ -8,6 +8,7 @@ import com.fulafula.databinding.ActivityMainBinding;
 import com.fulafula.utils.AppUtil;
 import com.fulafula.view.common.BaseActivity;
 import com.fulafula.view.ui.opencv.BlurDetectionFragment;
+import com.fulafula.view.ui.opencv.RectangleDetectionFragment;
 
 import javax.inject.Inject;
 
@@ -35,6 +36,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     protected void addBlurDetectionFragment() {
         addFragment(BlurDetectionFragment.newInstance(), BlurDetectionFragment.TAG, true);
+    }
+
+    protected void addRectangleDetectionFragment(boolean isBlurDetection) {
+        addFragment(RectangleDetectionFragment.newInstance(isBlurDetection), RectangleDetectionFragment.TAG, true);
     }
 
     private void addFragment(Fragment fragment, String tag, Boolean isBack) {

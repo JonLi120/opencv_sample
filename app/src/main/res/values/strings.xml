@@ -11,4 +11,5 @@
     <string name="lab_image_blur_detection">Image Blur Detection</string>
     <string name="lab_image_rectangle_detection">Image Rectangle Detection</string>
     <string name="lab_select_image">Select Image</string>
+    <string name="lab_image_both_detection"><![CDATA[Blur & Rectangle Detection]]></string>
 </resources>

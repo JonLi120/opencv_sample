@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.fulafula.Constants;
 import com.fulafula.utils.AppUtil;
+import com.fulafula.utils.ImageUtil;
 import com.fulafula.utils.SharedPrefUtil;
 
 import javax.inject.Singleton;
@@ -26,5 +27,11 @@ public class UtilsModule {
     @Singleton
     AppUtil provideAppUtil(Context context) {
         return new AppUtil(context);
+    }
+
+    @Provides
+    @Singleton
+    ImageUtil provideImageUtil(Context context) {
+        return new ImageUtil(context);
     }
 }

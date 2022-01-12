@@ -23,6 +23,15 @@
         app:layout_constraintStart_toStartOf="@id/btnBlurDetection"
         app:layout_constraintEnd_toEndOf="@id/btnBlurDetection"
         app:layout_constraintTop_toBottomOf="@id/btnBlurDetection"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/btnBothDetection"/>
+
+    <Button
+        android:id="@+id/btnBothDetection"
+        style="@style/CommonButtonStyle"
+        android:text="@string/lab_image_both_detection"
+        app:layout_constraintStart_toStartOf="@id/btnBlurDetection"
+        app:layout_constraintEnd_toEndOf="@id/btnBlurDetection"
+        app:layout_constraintTop_toBottomOf="@id/btnRectangleDetection"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
