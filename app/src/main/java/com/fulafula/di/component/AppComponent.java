@@ -5,6 +5,7 @@ import android.app.Application;
 import com.fulafula.FulaApplication;
 import com.fulafula.di.module.ActivityModule;
 import com.fulafula.di.module.AppModule;
+import com.fulafula.di.module.DatabaseModule;
 import com.fulafula.di.module.FragmentModule;
 import com.fulafula.di.module.ServiceModule;
 import com.fulafula.di.module.ViewModelModule;
@@ -23,7 +24,8 @@ import dagger.android.AndroidInjector;
         ActivityModule.class,
         FragmentModule.class,
         ServiceModule.class,
-        ViewModelModule.class
+        ViewModelModule.class,
+        DatabaseModule.class
 })
 public interface AppComponent extends AndroidInjector<FulaApplication> {
 
