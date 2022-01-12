@@ -27,6 +27,12 @@ android {
     properties.load(new FileInputStream(propertiesFile))
 
     signingConfigs {
+        debug {
+            storeFile properties['DEBUG_KEYSTORE_FILE'] != null ? file(properties['DEBUG_KEYSTORE_FILE']) : null
+            keyAlias properties.getProperty('DEBUG_KEY_ALIAS', null)
+            storePassword properties.getProperty('DEBUG_STORE_PASSWORD', null)
+            keyPassword properties.getProperty('DEBUG_KEY_PASSWORD', null)
+        }
         release {
             storeFile properties['KEYSTORE_FILE'] != null ? file(properties['KEYSTORE_FILE']) : null
             keyAlias properties.getProperty('KEY_ALIAS', null)
@@ -42,6 +48,8 @@ android {
             manifestPlaceholders.appName = "@string/app_name_dev"
             manifestPlaceholders.analyticsEnabled = false
             manifestPlaceholders.crashlyticsEnabled = false
+
+            signingConfig signingConfigs.debug
 
             buildConfigField 'String', 'API_DOMAIN', properties.getProperty('API_DOMAIN_DEV', "\"\"")
         }
