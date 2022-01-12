@@ -52,6 +52,13 @@ android {
             signingConfig signingConfigs.debug
 
             buildConfigField 'String', 'API_DOMAIN', properties.getProperty('API_DOMAIN_DEV', "\"\"")
+
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    project.ext { apkName = 'debug' }
+                    output.outputFileName = "${apkName}.apk"
+                }
+            }
         }
         release {
             debuggable false
@@ -65,6 +72,13 @@ android {
             signingConfig signingConfigs.release
 
             buildConfigField 'String', 'API_DOMAIN', properties.getProperty('API_DOMAIN_PROD', "\"\"")
+
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    project.ext { apkName = 'release' }
+                    output.outputFileName = "${apkName}.apk"
+                }
+            }
         }
         sit {
             initWith debug
@@ -84,6 +98,14 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi-v7a" // "x86"
+            universalApk false
+        }
     }
     sourceSets {
         main {
