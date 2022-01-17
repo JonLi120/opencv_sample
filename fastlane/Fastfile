@@ -59,7 +59,7 @@ platform :android do
   lane :distribute do |options|
     build_android_app(
       task: "assemble",
-      build_type: "uat"
+      build_type: options[:build_type]
     )
     commit = last_git_commit
     firebase_app_distribution(

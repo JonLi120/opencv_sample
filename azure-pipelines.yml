@@ -14,28 +14,28 @@ jobs:
   - job: build_job
     steps:
       - task: DownloadSecureFile@1
-          name: releaseKeystore
-          displayName: 'Download release keystore'
-          inputs:
-            secureFile: 'release.keystore'
+        name: releaseKeystore
+        displayName: 'Download release keystore'
+        inputs:
+          secureFile: 'release.keystore'
 
       - task: DownloadSecureFile@1
-          name: debugKeystore
-          displayName: 'Download debug keystore'
-          inputs:
-            secureFile: 'debug.keystore'
+        name: debugKeystore
+        displayName: 'Download debug keystore'
+        inputs:
+          secureFile: 'debug.keystore'
 
       - task: DownloadSecureFile@1
-          name: baseProperties
-          displayName: 'Download Properties'
-          inputs:
-            secureFile: 'base.properties'
+        name: baseProperties
+        displayName: 'Download Properties'
+        inputs:
+          secureFile: 'base.properties'
 
       - task: DownloadSecureFile@1
-          name: firebaseCredential
-          displayName: 'Download firebase credentials'
-          inputs:
-            secureFile: 'firebase_credentials.json'
+        name: firebaseCredential
+        displayName: 'Download firebase credentials'
+        inputs:
+          secureFile: 'firebase_credentials.json'
 
       - script: |
           sudo chown root:root $(baseProperties.secureFilePath)
@@ -50,15 +50,15 @@ jobs:
           displayName: 'Set up jks file path in properties.'
 
       - bash: echo "FIREBASE_ANDROID_ID = $FIREBASE_APP_ID"
-          env:
-            FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
-          displayName: 'Set up firebase id in Environment.'
+        env:
+          FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
+        displayName: 'Set up firebase id in Environment.'
 
       - task: JavaToolInstaller@0
-          inputs:
-            versionSpec: '11'
-            jdkArchitectureOption: 'x64'
-            jdkSourceOption: 'PreInstalled'
+        inputs:
+          versionSpec: '11'
+          jdkArchitectureOption: 'x64'
+          jdkSourceOption: 'PreInstalled'
 
       - script: |
           java -version
@@ -80,18 +80,18 @@ jobs:
        displayName: 'Build apk and push Firebase App Distributions'
 
   - job: uat_job
-      denpendsOn: build_job
-      condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
-      steps:
-        - script: |
-            fastlane clean
-            fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "uat"
-          displayName: 'Build apk and push Firebase App Distributions'
+    denpendsOn: build_job
+    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
+    steps:
+      - script: |
+          fastlane clean
+          fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "uat"
+        displayName: 'Build apk and push Firebase App Distributions'
 
   - job: master_job
-      denpendsOn: build_job
-      condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-      steps:
+    denpendsOn: build_job
+    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    steps:
 #        - script: |
 #            fastlane clean
 #            fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID)
