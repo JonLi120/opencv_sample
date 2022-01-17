@@ -71,7 +71,7 @@ jobs:
         displayName: 'Installed Gradlew'
 
   - job: sit_job
-    denpendsOn: build_job
+    dependsOn: build_job
     condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/feature/*'))
     steps:
      - script: |
@@ -80,7 +80,7 @@ jobs:
        displayName: 'Build apk and push Firebase App Distributions'
 
   - job: uat_job
-    denpendsOn: build_job
+    dependsOn: build_job
     condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
     steps:
       - script: |
@@ -88,10 +88,10 @@ jobs:
           fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "uat"
         displayName: 'Build apk and push Firebase App Distributions'
 
-  - job: master_job
-    denpendsOn: build_job
-    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    steps:
+#  - job: master_job
+#    dependsOn: build_job
+#    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#    steps:
 #        - script: |
 #            fastlane clean
 #            fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID)
