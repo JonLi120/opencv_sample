@@ -47,7 +47,7 @@ jobs:
           - script: |
           cd $(Build.SourcesDirectory)
           echo -e "\nKEYSTORE_FILE = $(releaseKeystore.secureFilePath)\nDEBUG_KEYSTORE_FILE = $(debugKeystore.secureFilePath)" >> base.properties
-          displayName: 'Set up jks file path in properties.'
+        displayName: 'Set up jks file path in properties.'
 
       - bash: echo "FIREBASE_ANDROID_ID = $FIREBASE_APP_ID"
         env:
