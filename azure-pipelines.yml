@@ -72,7 +72,7 @@ jobs:
 
   - job: sit_job
     dependsOn: build_job
-    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/feature/*'))
+    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/feature/'))
     steps:
      - script: |
          fastlane clean
