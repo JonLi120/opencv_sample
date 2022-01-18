@@ -10,8 +10,8 @@ trigger:
 pool:
   vmImage: 'macos-latest'
 
-jobs:
-  - job: build_job
+#jobs:
+#  - job: build_job
     steps:
       - task: DownloadSecureFile@1
         name: releaseKeystore
@@ -70,23 +70,35 @@ jobs:
       - script: chmod +x ./gradlew
         displayName: 'Installed Gradlew'
 
-  - job: sit_job
-    dependsOn: build_job
-    condition: and(succeeded('build_job'), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/'))
-    steps:
-     - script: |
-         fastlane clean
-         fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "sit"
-       displayName: 'Build apk and push Firebase App Distributions'
+      - script: |
+          fastlane clean
+          fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "sit"
+        displayName: 'Build apk and push Firebase App Distributions'
+        condition: and(succeeded('build_job'), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/'))
 
-  - job: uat_job
-    dependsOn: build_job
-    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
-    steps:
       - script: |
           fastlane clean
           fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "uat"
         displayName: 'Build apk and push Firebase App Distributions'
+        condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
+
+#  - job: sit_job
+#    dependsOn: build_job
+#    condition: and(succeeded('build_job'), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/'))
+#    steps:
+#     - script: |
+#         fastlane clean
+#         fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "sit"
+#       displayName: 'Build apk and push Firebase App Distributions'
+#
+#  - job: uat_job
+#    dependsOn: build_job
+#    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
+#    steps:
+#      - script: |
+#          fastlane clean
+#          fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "uat"
+#        displayName: 'Build apk and push Firebase App Distributions'
 
 #  - job: master_job
 #    dependsOn: build_job
