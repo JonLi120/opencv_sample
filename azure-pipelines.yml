@@ -72,13 +72,13 @@ steps:
 
   - script: |
       fastlane clean
-      fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID)
+      fastlane distribute_sit firebase_id:$(FIREBASE_ANDROID_ID)
     displayName: 'Build sit apk and push Firebase App Distributions'
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')
 
   - script: |
       fastlane clean
-      fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID)
+      fastlane distribute_uat firebase_id:$(FIREBASE_ANDROID_ID)
     displayName: 'Build uat apk and push Firebase App Distributions'
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/uat')
 
