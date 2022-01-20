@@ -17,6 +17,11 @@ default_platform(:android)
 
 platform :android do
 
+  desc "Check version update."
+  before_all do
+    update_fastlane
+  end
+
   desc "Runs all the tests"
   lane :tests do
     gradle(task: "test")
