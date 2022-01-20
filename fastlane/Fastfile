@@ -56,7 +56,7 @@ platform :android do
   # end
 
   desc "Lane for distributing sit app using Firebase App Distributions"
-  lane :distribute do |options|
+  lane :distribute_sit do |options|
     build_android_app(
       task: "assemble",
       build_type: "sit"
@@ -71,7 +71,7 @@ platform :android do
   end
 
   desc "Lane for distributing uat app using Firebase App Distributions"
-    lane :distribute do |options|
+    lane :distribute_uat do |options|
       build_android_app(
         task: "assemble",
         build_type: "uat"
