@@ -7,7 +7,6 @@ trigger:
  - uat
  - sit
  - master
- - feature/*
 
 pool:
   vmImage: 'macos-latest'
@@ -59,8 +58,6 @@ steps:
       echo "JSON_KEY_FILE = \"$(googlePlayCredentials.secureFilePath)\"" >> $(Build.SourcesDirectory)/fastlane/.env
       echo "FIREBASE_ANDROID_ID = \"$(FIREBASE_ANDROID_ID)\"" >> $(Build.SourcesDirectory)/fastlane/.env
       cat $(Build.SourcesDirectory)/fastlane/.env
-#    env:
-#      FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
     displayName: 'Set up firebase id in Environment.'
 
   - task: JavaToolInstaller@0
@@ -83,18 +80,10 @@ steps:
       fastlane clean
       fastlane distribute build_type:$(Build.SourceBranchName)
     displayName: 'Build sit apk and push Firebase App Distributions'
-#    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')
     condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/sit'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
-
-#  - script: |
-#      fastlane clean
-#      fastlane distribute_uat firebase_id:$(FIREBASE_ANDROID_ID)
-#    displayName: 'Build uat apk and push Firebase App Distributions'
-#    condition: eq(variables['Build.SourceBranch'], 'refs/heads/uat')
 
   - script: |
       fastlane clean
       fastlane deploy_google_play
     displayName: 'Distribute app to Google Play Beta track'
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')
-#    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')

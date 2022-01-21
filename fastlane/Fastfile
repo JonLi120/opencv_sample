@@ -32,64 +32,6 @@ platform :android do
     gradle(tasks: ["clean"])
   end
 
-  # desc "Build .apk"
-  # lane :build_uat_apk do
-  #   gradle(
-  #     task: "assemble",
-  #     build_type: "uat"
-  #   )
-  # end
-
-  # desc "Build .aab"
-  # lane :build_release_aab do 
-  #   gradle(
-  #     task: "bundle",
-  #     build_type: "release"
-  #   )
-  # end
-
-  # desc "Submit a new Beta Build to Crashlytics Beta"
-  # lane :beta do
-  #   gradle(task: "clean assembleRelease")
-  #   crashlytics
-  # end
-
-  # desc "Deploy a new version to the Google Play"
-  # lane :deploy do
-  #   gradle(task: "clean assembleRelease")
-  #   upload_to_play_store
-  # end
-
-  desc "Lane for distributing sit app using Firebase App Distributions"
-  lane :distribute_sit do |options|
-    build_android_app(
-      task: "assemble",
-      build_type: "sit"
-    )
-    commit = last_git_commit
-    firebase_app_distribution(
-        service_credentials_file: "firebase_credentials.json",
-        app: options[:firebase_id],
-        release_notes: commit[:message],
-        groups: "ctbc_testers"
-    )
-  end
-
-  desc "Lane for distributing uat app using Firebase App Distributions"
-  lane :distribute_uat do |options|
-    build_android_app(
-      task: "assemble",
-      build_type: "uat"
-    )
-    commit = last_git_commit
-    firebase_app_distribution(
-        service_credentials_file: "firebase_credentials.json",
-        app: options[:firebase_id],
-        release_notes: commit[:message],
-        groups: "ctbc_testers"
-    )
-  end
-
   desc "Lane for distributing app using Firebase App Distributions"
   lane :distribute do |options|
     build_android_app(
