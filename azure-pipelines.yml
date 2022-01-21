@@ -57,7 +57,7 @@ steps:
 
   - script: |
       echo "JSON_KEY_FILE = \"$(googlePlayCredentials.secureFilePath)\"" >> $(Build.SourcesDirectory)/fastlane/.env
-      echo "FIREBASE_ANDROID_ID = \"$(FIREBASE_APP_ID)\"" >> $(Build.SourcesDirectory)/fastlane/.env
+      echo "FIREBASE_ANDROID_ID = \"$(FIREBASE_ANDROID_ID)\"" >> $(Build.SourcesDirectory)/fastlane/.env
       cat $(Build.SourcesDirectory)/fastlane/.env
 #    env:
 #      FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
@@ -96,5 +96,5 @@ steps:
       fastlane clean
       fastlane deploy_google_play
     displayName: 'Distribute app to Google Play Beta track'
-#    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')
+#    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
