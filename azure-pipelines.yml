@@ -56,7 +56,6 @@ steps:
     displayName: 'Set up jks file path in properties.'
 
   - script: |
-#      echo "FIREBASE_ANDROID_ID = $FIREBASE_APP_ID"
       echo "JSON_KEY_FILE = \\"$(googlePlayCredentials.secureFilePath)\\"" >> $(Build.SourcesDirectory)/fastlane/.env
       echo "FIREBASE_ANDROID_ID = \\"$(FIREBASE_APP_ID)\\"" >> $(Build.SourcesDirectory)/fastlane/.env
       cat $(Build.SourcesDirectory)/fastlane/.env
