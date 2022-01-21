@@ -81,10 +81,10 @@ steps:
 
   - script: |
       fastlane clean
-      fastlane distribute
+      fastlane distribute build_type:$(Build.SourceBranchName)
     displayName: 'Build sit apk and push Firebase App Distributions'
-#    condition: eq(variables['Build.SourceBranch'], 'refs/heads/sit')
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')
+#    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')
+    condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/sit'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
 
 #  - script: |
 #      fastlane clean
