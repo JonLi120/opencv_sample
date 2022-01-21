@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "806563575988",
-    "project_id": "fulafulaapp",
-    "storage_bucket": "fulafulaapp.appspot.com"
+    "project_number": "516041332616",
+    "project_id": "pc-api-7406810872460109859-36",
+    "storage_bucket": "pc-api-7406810872460109859-36.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:806563575988:android:c52eda83737b9359d27fe1",
+        "mobilesdk_app_id": "1:516041332616:android:f3468cde436853ce8acc3d",
         "android_client_info": {
           "package_name": "com.fulafula"
         }
       },
       "oauth_client": [
         {
-          "client_id": "806563575988-psri0aud8bs9gai5du5v4fkhgpihnuj0.apps.googleusercontent.com",
+          "client_id": "516041332616-6mh14a9tcrk7pfqg6jgcp889vg5kv903.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.fulafula",
@@ -22,28 +22,29 @@
           }
         },
         {
-          "client_id": "806563575988-2sd4dmsrqdhhhohrjsjhr1e9adajtvuc.apps.googleusercontent.com",
+          "client_id": "516041332616-vilhqmtmhlmjv1ar064ivh2gq5n57f3o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fulafula",
+            "certificate_hash": "802db970f3edde7f66c60fee303e92ed768ce80f"
+          }
+        },
+        {
+          "client_id": "516041332616-4sqbncvuq9551u04mi1cod5a6hkstroh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCTG9utWpplCh2jcfIMUrEuGUX7Xemu-dg"
+          "current_key": "AIzaSyBw2ghT9wECeps1BmCzF1-ioa0aqZwH0d0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "806563575988-2sd4dmsrqdhhhohrjsjhr1e9adajtvuc.apps.googleusercontent.com",
+              "client_id": "516041332616-4sqbncvuq9551u04mi1cod5a6hkstroh.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "806563575988-33v31qn13o3lnv2luk5qspo01dq5fb50.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.fulafula"
-              }
             }
           ]
         }
