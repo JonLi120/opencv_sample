@@ -5,13 +5,13 @@
 
 trigger:
  - uat
+ - sit
+ - master
  - feature/*
 
 pool:
   vmImage: 'macos-latest'
 
-#jobs:
-#  - job: build_job
 steps:
   - task: DownloadSecureFile@1
     name: releaseKeystore
@@ -37,21 +37,31 @@ steps:
     inputs:
       secureFile: 'firebase_credentials.json'
 
+  - task: DownloadSecureFile@1
+    name: googlePlayCredentials
+    displayName: 'Download google play credentials'
+    inputs:
+      secureFile: 'play-store-credentials.json'
+
   - script: |
       sudo chown root:root $(baseProperties.secureFilePath)
       sudo chmod a+r $(baseProperties.secureFilePath)
       sudo mv $(baseProperties.secureFilePath) $(Build.SourcesDirectory)
       sudo mv $(firebaseCredential.secureFilePath) $(Build.SourcesDirectory)
-      displayName: 'Move files to root project'
+    displayName: 'Move files to root project'
 
-      - script: |
+  - script: |
       cd $(Build.SourcesDirectory)
       echo -e "\nKEYSTORE_FILE = $(releaseKeystore.secureFilePath)\nDEBUG_KEYSTORE_FILE = $(debugKeystore.secureFilePath)" >> base.properties
     displayName: 'Set up jks file path in properties.'
 
-  - bash: echo "FIREBASE_ANDROID_ID = $FIREBASE_APP_ID"
-    env:
-      FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
+  - script: |
+#      echo "FIREBASE_ANDROID_ID = $FIREBASE_APP_ID"
+      echo "JSON_KEY_FILE = \\"$(googlePlayCredentials.secureFilePath)\\"" >> $(Build.SourcesDirectory)/fastlane/.env
+      echo "FIREBASE_ANDROID_ID = \\"$(FIREBASE_APP_ID)\\"" >> $(Build.SourcesDirectory)/fastlane/.env
+      cat $(Build.SourcesDirectory)/fastlane/.env
+#    env:
+#      FIREBASE_APP_ID: $(FIREBASE_ANDROID_ID)
     displayName: 'Set up firebase id in Environment.'
 
   - task: JavaToolInstaller@0
@@ -72,39 +82,20 @@ steps:
 
   - script: |
       fastlane clean
-      fastlane distribute_sit firebase_id:$(FIREBASE_ANDROID_ID)
+      fastlane distribute
     displayName: 'Build sit apk and push Firebase App Distributions'
+#    condition: eq(variables['Build.SourceBranch'], 'refs/heads/sit')
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')
+
+#  - script: |
+#      fastlane clean
+#      fastlane distribute_uat firebase_id:$(FIREBASE_ANDROID_ID)
+#    displayName: 'Build uat apk and push Firebase App Distributions'
+#    condition: eq(variables['Build.SourceBranch'], 'refs/heads/uat')
 
   - script: |
       fastlane clean
-      fastlane distribute_uat firebase_id:$(FIREBASE_ANDROID_ID)
-    displayName: 'Build uat apk and push Firebase App Distributions'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/uat')
-
-#  - job: sit_job
-#    dependsOn: build_job
-#    condition: and(succeeded('build_job'), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/'))
-#    steps:
-#     - script: |
-#         fastlane clean
-#         fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "sit"
-#       displayName: 'Build apk and push Firebase App Distributions'
-#
-#  - job: uat_job
-#    dependsOn: build_job
-#    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
-#    steps:
-#      - script: |
-#          fastlane clean
-#          fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID) build_type: "uat"
-#        displayName: 'Build apk and push Firebase App Distributions'
-
-#  - job: master_job
-#    dependsOn: build_job
-#    condition: and(succeeded('build_job'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-#    steps:
-#        - script: |
-#            fastlane clean
-#            fastlane distribute firebase_id:$(FIREBASE_ANDROID_ID)
-#          displayName: 'Build apk and push Firebase App Distributions'
+      fastlane deploy_google_play
+    displayName: 'Distribute app to Google Play Beta track'
+#    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
