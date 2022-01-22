@@ -50,7 +50,7 @@ platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy_google_play do
     build_android_app(
-      task: "assemble",
+      task: "bundle",
       build_type: "release"
     )
     upload_to_play_store(
@@ -61,7 +61,9 @@ platform :android do
         skip_upload_images: true,
         skip_upload_screenshots: true,
         skip_upload_changelogs: true,
-        release_status: 'draft'
+        release_status: 'draft',
+        track_promote_to: 'internal',
+        track_promote_release_status: 'draft'
     )
   end
 end
