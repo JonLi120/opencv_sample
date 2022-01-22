@@ -60,7 +60,8 @@ platform :android do
         skip_upload_metadata: true,
         skip_upload_images: true,
         skip_upload_screenshots: true,
-        validate_only: true
+        skip_upload_changelogs: true,
+        release_status: 'draft'
     )
   end
 end
