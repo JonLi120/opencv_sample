@@ -1,6 +1,6 @@
 package com.fulafula.di.module;
 
-import com.fulafula.view.ui.template.TemplateFragment;
+import com.fulafula.view.ui.pdfrender.PdfRenderFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -10,5 +10,5 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class FragmentModule {
 
     @ContributesAndroidInjector
-    abstract TemplateFragment contributeTemplateFragment();
+    abstract PdfRenderFragment contributePdfRenderFragment();
 }

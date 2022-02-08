@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 
 import java.util.UUID;
@@ -40,5 +42,25 @@ public class AppUtil {
 
     public String generateUserAgent() {
         return WebSettings.getDefaultUserAgent(mContext);
+    }
+
+    public int getDisplayWidth() {
+        DisplayMetrics metrics = new DisplayMetrics();
+
+        WindowManager manager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        manager.getDefaultDisplay()
+                .getMetrics(metrics);
+
+        return metrics.widthPixels;
+    }
+
+    public int getDisplayHeight() {
+        DisplayMetrics metrics = new DisplayMetrics();
+
+        WindowManager manager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        manager.getDefaultDisplay()
+                .getMetrics(metrics);
+
+        return metrics.heightPixels;
     }
 }

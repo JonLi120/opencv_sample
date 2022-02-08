@@ -3,6 +3,9 @@
     package="com.fulafula">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
         android:name=".FulaApplication"
@@ -30,7 +33,7 @@
             android:value="@string/facebook_app_id"/>
 
         <activity
-            android:name=".view.ui.template.TemplateActivity"
+            android:name=".view.ui.pdfrender.PdfRenderActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

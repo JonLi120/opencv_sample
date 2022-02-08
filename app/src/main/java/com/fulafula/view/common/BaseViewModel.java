@@ -10,10 +10,10 @@ public class BaseViewModel extends ViewModel {
 
     protected final CompositeDisposable mDisposable = new CompositeDisposable();
 
-    private final MutableLiveData<Object> _loadStatus = new MutableLiveData<>();
+    protected final MutableLiveData<Boolean> _loadStatus = new MutableLiveData<>();
 
-    public LiveData<Object> getLoadStatus() {
-        return (LiveData<Object>) _loadStatus;
+    public LiveData<Boolean> getLoadStatus() {
+        return _loadStatus;
     }
 
     @Override

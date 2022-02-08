@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.rxjava3.core.Single;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 /***
@@ -14,14 +15,14 @@ import retrofit2.Response;
 @Singleton
 public class SimpleRepository {
 
-    private FulaService service;
+    private final FulaService service;
 
     @Inject
     SimpleRepository(FulaService service) {
         this.service = service;
     }
 
-    public Single<Response> mockApi() {
-        return service.mockApi();
+    public Single<Response<ResponseBody>> getPdfFile(String url) {
+        return service.getPdfFile(url);
     }
 }

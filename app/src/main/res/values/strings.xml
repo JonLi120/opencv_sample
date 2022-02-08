@@ -8,4 +8,5 @@
 
     <string name="facebook_app_id">650429099673298</string>
     <string name="fb_login_protocol_scheme">fb650429099673298</string>
+    <string name="lab_loading">Loading...</string>
 </resources>

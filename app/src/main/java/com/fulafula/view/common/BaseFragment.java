@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
+import com.fulafula.databinding.DialogLoadingBinding;
 import com.fulafula.di.Injectable;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -27,6 +29,8 @@ public abstract class BaseFragment<VB extends ViewBinding> extends Fragment impl
 
     protected abstract void initView();
 
+    private AlertDialog loadingDialog;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,8 +46,29 @@ public abstract class BaseFragment<VB extends ViewBinding> extends Fragment impl
 
     @Override
     public void onDestroyView() {
+        if (loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+        }
         mDisposable.clear();
-        super.onDestroyView();
         _binding = null;
+        super.onDestroyView();
+    }
+
+    protected void startLoadingDialog() {
+        if (loadingDialog == null || !loadingDialog.isShowing()) {
+            DialogLoadingBinding _loadingBinding = DialogLoadingBinding.inflate(LayoutInflater.from(requireContext()));
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setView(_loadingBinding.getRoot());
+            builder.setCancelable(false);
+
+            loadingDialog = builder.create();
+            loadingDialog.show();
+        }
+    }
+
+    protected void stopLoadingDialog() {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+        }
     }
 }

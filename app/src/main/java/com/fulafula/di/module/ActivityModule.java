@@ -1,6 +1,6 @@
 package com.fulafula.di.module;
 
-import com.fulafula.view.ui.template.TemplateActivity;
+import com.fulafula.view.ui.pdfrender.PdfRenderActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -10,5 +10,5 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityModule {
 
     @ContributesAndroidInjector
-    abstract TemplateActivity contributeTemplateActivity();
+    abstract PdfRenderActivity contributePdfRenderActivity();
 }

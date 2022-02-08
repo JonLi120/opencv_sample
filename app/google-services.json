@@ -45,6 +45,14 @@
             {
               "client_id": "516041332616-4sqbncvuq9551u04mi1cod5a6hkstroh.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "516041332616-3e8k08vdprvkn5dlukc51e6iafv0f4v9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ctbcfinance.fula",
+                "app_store_id": "1607452401"
+              }
             }
           ]
         }
